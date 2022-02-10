@@ -43,31 +43,15 @@ namespace CRUDAPI.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        [HttpPut]
+        public async Task<IActionResult> PutUser(User[] users)
         {
-            if (id != user.id)
+            foreach (var user in users)
             {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
+                _context.Entry(user).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //_context.Entry(user).State = EntityState.Modified;
 
             return NoContent();
         }
